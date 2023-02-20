@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { usuarioController } from "../controllers/usuarioController";
+import { checkJWT } from "../middleware/jwt";
 
 class UsuarioRoutes {
 
@@ -12,16 +13,16 @@ class UsuarioRoutes {
 
     private config (){
         // Listado (GET)
-        this.router.get("/", usuarioController.listar);
+        this.router.get("/", [checkJWT], usuarioController.listar);
 
         // Inserción (POST)
-        this.router.post("/", usuarioController.agregar);
+        this.router.post("/", [checkJWT], usuarioController.agregar);
 
         // Actualización (PUT)
-        this.router.put("/", usuarioController.actualizar);
+        this.router.put("/", [checkJWT], usuarioController.actualizar);
 
         // Eliminar (DELETE) => param: cveUsuario
-        this.router.delete("/:cveUsuario", usuarioController.eliminar);
+        this.router.delete("/:cveUsuario", [checkJWT], usuarioController.eliminar);
     }
 }
 
