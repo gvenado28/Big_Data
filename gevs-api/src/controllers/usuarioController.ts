@@ -108,6 +108,32 @@ class UsuarioController {
     public async eliminar(req: Request, res: Response) {
         try {
 
+        // Obtener los datos a partir de los paramétros (params => string).
+        var { cveUsuario } = req.params;        // Segmentación
+
+        cveUsuario
+
+        // Validar que los datos no sean nulos (null).
+        if (!cveUsuario) {
+            return res.status(400).json({mensaje: "Todos los datos son req."});
+        }
+
+        // Verificar que los datos no esten vacíos.
+        if (cveUsuario == "") {
+            return res.status(400).json({mensaje: "Todos los datos son req."});
+        }
+
+        // TODO: Persistencia de los datos (eliminar el registro => cveUsuario).
+        // TODO: Convertir cveUSuario a tipo number parseInt(cveUsuario).
+        const result = await dao.eliminar(parseInt(cveUsuario));
+
+        // TODO: Verificar que el dato se elimino.
+        if (result.affectedRows > 0) {
+            return res.json({mensaje: "Datos eliminados correctamente"});
+        } else {
+            return res.status(500).json({mensaje: result.message});
+        }
+
         } catch (error: any){
             return res.status(500).json({mensaje: error.message});
         }
